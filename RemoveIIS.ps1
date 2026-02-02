@@ -1,4 +1,24 @@
-# Define a list of IIS-related features to disable and remove
+<#
+.SYNOPSIS
+Disables and removes IIS-related Windows optional features.
+
+.DESCRIPTION
+Iterates through a predefined list of IIS and WAS features
+and removes them silently without forcing a restart.
+
+This is useful for hardening servers or preparing
+minimal Windows Server installations.
+
+.NOTES
+- Run as Administrator
+- No forced restart is performed
+- Errors are suppressed silently
+
+#>
+
+# ----------------------------
+# List of IIS and WAS features
+# ----------------------------
 $iisFeatures = @(
     "IIS-WebServerRole",
     "IIS-WebServerManagementTools",
@@ -36,9 +56,21 @@ $iisFeatures = @(
     "WAS-ConfigurationAPI"
 )
 
-# Disable and remove features silently without forced restart
+# ----------------------------
+# Remove each feature silently
+# ----------------------------
 foreach ($feature in $iisFeatures) {
-    Disable-WindowsOptionalFeature -Online -FeatureName $feature -Remove -NoRestart -ErrorAction SilentlyContinue | Out-Null
+    try {
+        Disable-WindowsOptionalFeature -Online `
+            -FeatureName $feature `
+            -Remove `
+            -NoRestart `
+            -ErrorAction SilentlyContinue | Out-Null
+        Write-Host "Removed feature: $feature" -ForegroundColor Green
+    }
+    catch {
+        Write-Warning "Failed to remove feature: $feature"
+    }
 }
 
-
+Write-Host "IIS feature removal complete. A restart may be required to finalize changes." -ForegroundColor Cyan
