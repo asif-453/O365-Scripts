@@ -81,3 +81,4 @@ $csvFile = Join-Path $outputPath "User_DistributionGroup_Report.csv"
 $results | Sort-Object UserEmail | Export-Csv -Path $csvFile -NoTypeInformation -Encoding UTF8
 
 Write-Host "Distribution group membership report generated:" $csvFile -ForegroundColor Green
+
