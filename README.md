@@ -43,7 +43,7 @@ Install-Module Microsoft.Graph -Scope CurrentUser
 Install-Module ExchangeOnlineManagement -Scope CurrentUser
 
 
-## **Quick Start Examples**
+## Quick Start Examples
 
 # 1. Audit Entra ID applications
 .\AppID.ps1
